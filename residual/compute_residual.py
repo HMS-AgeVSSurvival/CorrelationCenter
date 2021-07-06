@@ -28,7 +28,7 @@ def compute_residual(main_category, category):
     data = pd.read_feather(f"../TrainingCenter/data/{main_category}/{category}.feather").set_index("SEQN")
     raw_data = data.copy()
 
-    data.drop(columns=data.columns[~data.columns.str.startswith("prediction") & ~data.columns.isin([AGE_COLUMN, GENDER_COLUMN])], inplace=True)
+    data.drop(columns=data.columns[~(data.columns.str.startswith("prediction") | data.columns.isin([AGE_COLUMN, GENDER_COLUMN]))], inplace=True)
     data.drop(index=data.index[data.index.astype(str).str.startswith("feature_importances")], inplace=True)
 
     data["age_in_year"] = (data[AGE_COLUMN] / 12).round(0)
