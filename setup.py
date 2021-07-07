@@ -4,7 +4,7 @@ setup(
     name="correlation_center",
     version="0.1",
     description="Compute the correlations of some trained algorithms from NHANES dataset.",
-    packages=["residual", "log_hazard_ratio"],
+    packages=["residual", "log_hazard_ratio", "correlation"],
     requires=["setuptools", "wheel"],
     install_requires=[
         "numpy",
