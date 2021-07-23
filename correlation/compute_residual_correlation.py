@@ -114,7 +114,8 @@ def compute_correlation(target_idx, target_col):
     correlations = {"pearson": template_correlations.copy(), "spearman": template_correlations.copy()}
     correlations_std = {"pearson": template_correlations.copy(), "spearman": template_correlations.copy()}
 
-    for main_category_idx in tqdm(MAIN_CATEGORIES):
+    for main_category_idx in MAIN_CATEGORIES:
+        print("Main category index :", main_category_idx)
         for category_idx in CATEGORIES[main_category_idx]:
             data_idx = pd.read_feather(f"data/{main_category_idx}/{category_idx}.feather").set_index("SEQN")
             data_idx.drop(columns=data_idx.columns[~(data_idx.columns.str.startswith(f"residual") | (data_idx.columns == "fold"))], inplace=True)
