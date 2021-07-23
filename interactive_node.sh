@@ -61,3 +61,4 @@ fi
 
 srun --partition interactive --job-name "InteractiveJob" --cpus-per-task 1 --mem-per-cpu $MEMORY\G --time $TIME:00:00 --pty bash
 module load gcc/6.2.0 python/3.7.4
+source env_o2/bin/activate
