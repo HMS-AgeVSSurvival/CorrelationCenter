@@ -23,7 +23,7 @@ setup(
         "console_scripts": [
             "residual=residual.compute_residual:residual_cli",
             "log_hazard_ratio=log_hazard_ratio.compute_log_hazard_ratio:log_hazard_ratio_cli",
-            "correlation_residual=correlation.compute_residual_correlation:compute_residual_correlation_cli",
+            "residual_correlation=correlation.compute_residual_correlation:compute_residual_correlation_cli",
         ]
     },
 )

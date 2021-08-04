@@ -5,6 +5,16 @@ import gspread
 import json
 
 
+def to_alphabet(number):
+    if number <= 26:
+        return chr(ord('@') + number)
+    else:
+        if number % 26 == 0:
+            return to_alphabet(number // 26 - 1) + chr(ord('@') + 26)
+        else:
+            return to_alphabet(number // 26) + chr(ord('@') + number % 26)
+
+
 def get_spreadsheet():
     service_account_id = np.random.randint(1, 6)
     gc = gspread.service_account(filename=f"credentials/credentials_{service_account_id}.json")
@@ -40,8 +50,9 @@ def update_cell(sheet_name, row, col, value):
 def update_cells(sheet_name, first_row, first_col, values):
     last_row = first_row + values.shape[0] - 1
     last_col = first_col + values.shape[1] - 1
-    first_col_letter = chr(ord('@') + first_col)
-    last_col_letter = chr(ord('@') + last_col)
+
+    first_col_letter = to_alphabet(first_col)
+    last_col_letter = to_alphabet(last_col)
 
     cell_updated = False
     while not cell_updated:
