@@ -32,21 +32,22 @@ def merge_data_dumps(main_category, category):
     for target in ["age", "all", "cvd", "cancer"]:
         for algorithm in ["elastic_net", "light_gbm"]:
             for random_state in [1, 2]:
-                path_dump = f"../TrainingCenter/dumps/prediction/{target}/{main_category}/{category}/{algorithm}_{random_state}.feather"
-                
-                if os.path.exists(path_dump):
-                    dump = pd.read_feather(path_dump).set_index("SEQN")
+                path_dump_prediction = f"../TrainingCenter/dumps/prediction/{target}/{main_category}/{category}/{algorithm}_{random_state}.feather"
+                if os.path.exists(path_dump_prediction):
+                    dump = pd.read_feather(path_dump_prediction).set_index("SEQN")
                     data.loc[dump.index, dump.columns] = dump
                 
-                if os.path.exists(path_dump.replace("prediction", "feature_importances")):
-                    dump = pd.read_feather(path_dump.replace("prediction", "feature_importances")).set_index("index").T   
+                path_dump_feature_importances = path_dump_prediction.replace("prediction", "feature_importances")
+                if os.path.exists(path_dump_feature_importances):
+                    dump = pd.read_feather(path_dump_feature_importances).set_index("index").T   
                     for dump_index in dump.index:
                         data.loc[dump_index] = dump.loc[dump_index]
             
-            if os.path.exists(path_dump.replace("prediction", "feature_importances").replace("2", "train")):
-                dump = pd.read_feather(path_dump.replace("prediction", "feature_importances").replace("2", "train")).set_index("index").T
-                for dump_index in dump.index:
-                    data.loc[dump_index] = dump.loc[dump_index]
+                path_dump_feature_importances_train = path_dump_feature_importances.replace(str(random_state), f"{random_state}_train")
+                if os.path.exists(path_dump_feature_importances_train):
+                    dump = pd.read_feather(path_dump_feature_importances_train).set_index("index").T
+                    for dump_index in dump.index:
+                        data.loc[dump_index] = dump.loc[dump_index]
 
     return data
 

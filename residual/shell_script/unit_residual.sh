@@ -37,7 +37,7 @@ else
     do
         IFS='/' read -r a a a a FILE_CATEGORY <<<"$PATH_CATEGORY"
         CATEGORY=$(echo $FILE_CATEGORY | cut -d "." -f 1)
-
+        
         residual -mc $MAIN_CATEGORY -c $CATEGORY
     done
 fi 
