@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --partition short
-#SBATCH --time=2:00
+#SBATCH --time=04:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu 500M
+#SBATCH --mem-per-cpu 1G
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-user=theo.vincent@eleves.enpc.fr
 
