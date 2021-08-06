@@ -8,7 +8,7 @@ do
     number_indexes=$(( ${#TARGETS_INDEXES[@]} - IDX_TARGET_IDX ))
     for IDX_TARGET_COLUMN in ${TARGETS_INDEXES[@]:IDX_TARGET_IDX:number_indexes}
     do
-        [ ! -e out/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out ] || rm out/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out
+        echo -n > out/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out
         sbatch -J residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]} -o out/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out correlation/shell_script/unit_residual_correlation.sh -ti ${TARGETS[IDX_TARGET_IDX]} -tc ${TARGETS[IDX_TARGET_COLUMN]}
     done
 done
