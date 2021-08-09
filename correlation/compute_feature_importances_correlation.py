@@ -26,8 +26,8 @@ def compute_feature_importances_correlation_cli(argvs=sys.argv[1:]):
 
 def get_correlation_same_target_same_algorithm(data, category, target, algorithm, folds, correlations, correlations_std):
     for method in CORRELATIONS_METHODS:
-        item_a = data[f"feature_importances_{target}_{algorithm}_1_train"]
-        item_b = data[f"feature_importances_{target}_{algorithm}_2_train"]
+        item_a = data.loc[f"feature_importances_{target}_{algorithm}_1_train"]
+        item_b = data.loc[f"feature_importances_{target}_{algorithm}_2_train"]
         if method != "spearman" or (item_a.std() != 0 and item_b.std() != 0):
             correlations[method].loc[category, ("same_target_same_algorithm", target, algorithm)] = item_a.corr(item_b, method=method)
 
@@ -38,8 +38,8 @@ def get_correlation_same_target_same_algorithm(data, category, target, algorithm
                     for fold_b in folds[folds >= fold_a]:
                         if random_state_a == random_state_b and fold_a == fold_b:
                             continue
-                        item_a = data[f"feature_importances_{target}_{algorithm}_{random_state_a}_{fold_a}"]
-                        item_b = data[f"feature_importances_{target}_{algorithm}_{random_state_b}_{fold_b}"]
+                        item_a = data.loc[f"feature_importances_{target}_{algorithm}_{random_state_a}_{fold_a}"]
+                        item_b = data.loc[f"feature_importances_{target}_{algorithm}_{random_state_b}_{fold_b}"]
                         if method != "spearman" or (item_a.std() != 0 and item_b.std() != 0):
                             list_correlations_std.append(item_a.corr(item_b, method=method))
                         else:
@@ -55,8 +55,8 @@ def get_correlation_same_target(data, category, target, algorithms, folds, corre
         list_correlations = []
         for random_state_a in [1, 2]:
             for random_state_b in [1, 2]:
-                item_a = data[f"feature_importances_{target}_{algorithm_a}_{random_state_a}_train"]
-                item_b = data[f"feature_importances_{target}_{algorithm_b}_{random_state_b}_train"]
+                item_a = data.loc[f"feature_importances_{target}_{algorithm_a}_{random_state_a}_train"]
+                item_b = data.loc[f"feature_importances_{target}_{algorithm_b}_{random_state_b}_train"]
                 if method != "spearman" or (item_a.std() != 0 and item_b.std() != 0):
                     list_correlations.append(item_a.corr(item_b, method=method))
                 else:
@@ -68,8 +68,8 @@ def get_correlation_same_target(data, category, target, algorithms, folds, corre
             for fold_a in folds:
                 for random_state_b in [1, 2]:
                     for fold_b in folds:
-                        item_a = data[f"feature_importances_{target}_{algorithm_a}_{random_state_a}_{fold_a}"]
-                        item_b = data[f"feature_importances_{target}_{algorithm_b}_{random_state_b}_{fold_b}"]
+                        item_a = data.loc[f"feature_importances_{target}_{algorithm_a}_{random_state_a}_{fold_a}"]
+                        item_b = data.loc[f"feature_importances_{target}_{algorithm_b}_{random_state_b}_{fold_b}"]
                         if method != "spearman" or (item_a.std() != 0 and item_b.std() != 0):
                             list_correlations_std.append(item_a.corr(item_b, method=method))
                         else:
@@ -85,8 +85,8 @@ def get_correlation_same_algorithm(data, category, targets, algorithm, folds, co
         list_correlations = []
         for random_state_a in [1, 2]:
             for random_state_b in [1, 2]:
-                item_a = data[f"feature_importances_{target_a}_{algorithm}_{random_state_a}_train"]
-                item_b = data[f"feature_importances_{target_b}_{algorithm}_{random_state_b}_train"]
+                item_a = data.loc[f"feature_importances_{target_a}_{algorithm}_{random_state_a}_train"]
+                item_b = data.loc[f"feature_importances_{target_b}_{algorithm}_{random_state_b}_train"]
                 if method != "spearman" or (item_a.std() != 0 and item_b.std() != 0):
                     list_correlations.append(item_a.corr(item_b, method=method))
                 else:
@@ -98,8 +98,8 @@ def get_correlation_same_algorithm(data, category, targets, algorithm, folds, co
             for fold_a in folds:
                 for random_state_b in [1, 2]:
                     for fold_b in folds:
-                        item_a = data[f"feature_importances_{target_a}_{algorithm}_{random_state_a}_{fold_a}"]
-                        item_b = data[f"feature_importances_{target_b}_{algorithm}_{random_state_b}_{fold_b}"]
+                        item_a = data.loc[f"feature_importances_{target_a}_{algorithm}_{random_state_a}_{fold_a}"]
+                        item_b = data.loc[f"feature_importances_{target_b}_{algorithm}_{random_state_b}_{fold_b}"]
                         if method != "spearman" or (item_a.std() != 0 and item_b.std() != 0):
                             list_correlations_std.append(item_a.corr(item_b, method=method))
                         else:
@@ -123,8 +123,8 @@ def compute_correlation(main_category):
 
     for category in tqdm(CATEGORIES[main_category]):
         data = pd.read_feather(f"data/{main_category}/{category}.feather").set_index("SEQN")
-        
-        folds = data["fold"].drop_duplicates()
+
+        folds = data["fold"].drop_duplicates().dropna().astype(int)
         
         data.drop(index=data.index[~data.index.astype(str).str.startswith("feature_importances")], inplace=True)
         data.dropna(axis="columns", how="all", inplace=True)
@@ -137,15 +137,14 @@ def compute_correlation(main_category):
                 feasibility = [f"feature_importances_{target}_{algorithm}_{random_state}_train" in data.index for random_state in [1, 2]]
                 feasibility += [f"feature_importances_{target}_{algorithm}_{random_state}_{fold}" in data.index for random_state in [1, 2] for fold in folds]
                 if all(feasibility):
-                    print(1)
                     get_correlation_same_target_same_algorithm(data, category, target, algorithm, folds, correlations, correlations_std)
+
 
         for target in FEATURE_IMPORTANCES_SAME_DIFFERENT_TARGETS["same_target"]:
             for algorithms in FEATURE_IMPORTANCES_SAME_DIFFERENT_ALGORITHMS["same_target"]:
                 feasibility = [f"feature_importances_{target}_{algorithm}_{random_state}_train" in data.index for random_state in [1, 2] for algorithm in algorithms.split(" vs ")]
                 feasibility += [f"feature_importances_{target}_{algorithm}_{random_state}_{fold}" in data.index for random_state in [1, 2] for fold in folds for algorithm in algorithms.split(" vs ")]
                 if all(feasibility):
-                    print(1)
                     get_correlation_same_target(data, category, target, algorithms, folds, correlations, correlations_std)
 
         for targets in FEATURE_IMPORTANCES_SAME_DIFFERENT_TARGETS["same_algorithm"]:
@@ -153,13 +152,11 @@ def compute_correlation(main_category):
                 feasibility = [f"feature_importances_{target}_{algorithm}_{random_state}_train" in data.index for random_state in [1, 2] for target in targets.split(" vs ")]
                 feasibility += [f"feature_importances_{target}_{algorithm}_{random_state}_{fold}" in data.index for random_state in [1, 2] for fold in folds for target in targets.split(" vs ")]
                 if all(feasibility):
-                    print(1)
                     get_correlation_same_algorithm(data, category, targets, algorithm, folds, correlations, correlations_std)
-        break
 
-    # for method in CORRELATIONS_METHODS:
-    #     correlations[method].columns = map(str, correlations[method].columns.tolist())
-    #     correlations[method].reset_index().to_feather(f"data/correlation/feature_importances/{method}_{main_category}.feather")    
+    for method in CORRELATIONS_METHODS:
+        correlations[method].columns = map(str, correlations[method].columns.tolist())
+        correlations[method].reset_index().to_feather(f"data/correlation/feature_importances/{method}_{main_category}.feather")    
         
-    #     correlations_std[method].columns = map(str, correlations_std[method].columns.tolist())
-    #     correlations_std[method].reset_index().to_feather(f"data/correlation/feature_importances/{method}_std_{main_category}.feather")
+        correlations_std[method].columns = map(str, correlations_std[method].columns.tolist())
+        correlations_std[method].reset_index().to_feather(f"data/correlation/feature_importances/{method}_std_{main_category}.feather")
