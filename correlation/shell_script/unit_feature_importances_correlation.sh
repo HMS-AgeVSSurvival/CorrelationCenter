@@ -10,4 +10,4 @@ module load python/3.7.4
 source env_o2/bin/activate
 
 
-feature_importances_correlations $@
+feature_importances_correlation $@
