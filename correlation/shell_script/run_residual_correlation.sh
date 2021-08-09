@@ -9,6 +9,8 @@ do
     for IDX_TARGET_COLUMN in ${TARGETS_INDEXES[@]:IDX_TARGET_IDX:number_indexes}
     do
         echo -n > out/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out
-        sbatch -J residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]} -o out/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out correlation/shell_script/unit_residual_correlation.sh -ti ${TARGETS[IDX_TARGET_IDX]} -tc ${TARGETS[IDX_TARGET_COLUMN]}
+        [ ! -e error/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out ] || rm error/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out
+
+        sbatch -J residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]} -o out/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out -e error/residual_correlation/${TARGETS[IDX_TARGET_IDX]}_${TARGETS[IDX_TARGET_COLUMN]}.out correlation/shell_script/unit_residual_correlation.sh -ti ${TARGETS[IDX_TARGET_IDX]} -tc ${TARGETS[IDX_TARGET_COLUMN]}
     done
 done
