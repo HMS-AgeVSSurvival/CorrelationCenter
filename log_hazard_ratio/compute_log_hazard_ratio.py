@@ -5,7 +5,8 @@ import pandas as pd
 from lifelines import CoxPHFitter
 
 from log_hazard_ratio.update_log_hazard_ratio import update_results_survival
-from residual import AGE_COLUMN, GENDER_COLUMN, ETHNICITIES, DEATH_COLUMN, FOLLOW_UP_TIME_COLUMN, COLUMNS_TO_DROP_FOR_SCALE, COLUMNS_TO_ADD_AFTER_SCALE
+from residual import AGE_COLUMN, GENDER_COLUMN, ETHNICITIES, DEATH_COLUMN, FOLLOW_UP_TIME_COLUMN
+from log_hazard_ratio import COLUMNS_TO_DROP_FOR_SCALE, COLUMNS_TO_ADD_AFTER_SCALE
 
 
 def log_hazard_ratio_cli(argvs=sys.argv[1:]):
@@ -35,7 +36,7 @@ def compute_log_hazard_ratio(main_category, category, source_algorithm):
 
         if residual_column not in data.columns:
             print(f"No {residual_column} in data")
-            return None
+            continue
         
         data.drop(columns=data.columns[~data.columns.isin([residual_column, AGE_COLUMN, GENDER_COLUMN, FOLLOW_UP_TIME_COLUMN, DEATH_COLUMN, "survival_type_alive"] + ETHNICITIES)], inplace=True)
         data.drop(index=data.index[data.index.astype(str).str.startswith("feature_importances") | data["survival_type_alive"].isna()], inplace=True)
@@ -55,4 +56,4 @@ def compute_log_hazard_ratio(main_category, category, source_algorithm):
         else:
             metrics = {"log hazard ratio": -1, "p-value": -1, "std": -1}
             
-        update_results_survival(main_category, category, source_algorithm, metrics)
+        update_results_survival(main_category, category, source_algorithm, metrics, random_state)
