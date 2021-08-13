@@ -117,6 +117,7 @@ def compute_correlation(main_category):
 
     columns = pd.MultiIndex.from_tuples(list_columns)
     template_correlations = pd.DataFrame(None, index=CATEGORIES[main_category], columns=columns)
+    template_correlations.index.name = "category"
     
     correlations = {"pearson": template_correlations.copy(), "spearman": template_correlations.copy()}
     correlations_std = {"pearson": template_correlations.copy(), "spearman": template_correlations.copy()}
