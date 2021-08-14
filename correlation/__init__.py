@@ -13,7 +13,7 @@ QUESTIONNAIRE_CATEGORIES = list(map(lambda name_feather: name_feather.split(".fe
 CATEGORIES = {"examination": EXAMINATION_CATEGORIES, "laboratory": LABORATORY_CATEGORIES, "questionnaire": QUESTIONNAIRE_CATEGORIES}
 
 ALGORITHMS = ["elastic_net", "light_gbm"]
-ALGORITHMS_ALGORITHMS = [f"{algorithm_1} vs {algorithm_2}" for idx_algorithm, algorithm_1 in enumerate(ALGORITHMS) for algorithm_2 in TARGETS[idx_algorithm:]]
+ALGORITHMS_ALGORITHMS = [f"{algorithm_1} vs {algorithm_2}" for idx_algorithm, algorithm_1 in enumerate(ALGORITHMS) for algorithm_2 in ALGORITHMS[idx_algorithm:]]
 
 MINIMUM_NUMBER_PARTICIPANTS = 10
 
