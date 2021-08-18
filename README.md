@@ -47,5 +47,39 @@ To launch this step:
 
 ## Structure to have before launching the jobs
 
+┣ 📦TrainingCenter
+┃  ┗ 📂data
+┃     ┣ 📂examination
+┃     ┃ ┗ 📜[category].feather
+┃     ┣ 📂laboratory
+┃     ┃ ┗ 📜[category].feather
+┃     ┗ 📂questionnaire
+┃       ┗ 📜[category].feather
+┣ 📦CorrelationCenter
+   ┗ 📂[...]
 
-## Structure when the jobs are finished
+
+## Structure of the data folder when the jobs are finished
+
+ 📂data
+ ┣ 📂correlation
+ ┃ ┣ 📂feature_importances
+ ┃ ┃ ┣ 📜pearson_[...].feather
+ ┃ ┃ ┣ 📜spearman_[...].feather
+ ┃ ┗ 📂residual
+ ┃   ┣ 📜number_participants_[...].feather
+ ┃   ┣ 📜pearson_[...].feather
+ ┃   ┗ 📜spearman_[...].feather
+ ┣ 📂examination
+ ┃ ┗ 📜[category].feather
+ ┣ 📂feature_importances
+ ┃ ┣ 📂examination
+ ┃ ┃ ┗ 📜[category].feather
+ ┃ ┣ 📂laboratory
+ ┃ ┃ ┗ 📜[category].feather
+ ┃ ┗ 📂questionnaire
+ ┃ ┃ ┗ 📜[category].feather
+ ┣ 📂laboratory
+ ┃ ┗ 📜[category].feather
+ ┗ 📂questionnaire
+   ┗ 📜[category].feather
