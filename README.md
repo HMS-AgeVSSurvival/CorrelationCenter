@@ -46,7 +46,7 @@ To launch this step:
 
 
 ## Structure to have before launching the jobs
-
+```
 ┣ 📦TrainingCenter
 ┃  ┗ 📂data
 ┃     ┣ 📂examination
@@ -57,10 +57,10 @@ To launch this step:
 ┃       ┗ 📜[category].feather
 ┣ 📦CorrelationCenter
    ┗ 📂[...]
-
+```
 
 ## Structure of the data folder when the jobs are finished
-
+```
  📂data
  ┣ 📂correlation
  ┃ ┣ 📂feature_importances
@@ -83,3 +83,4 @@ To launch this step:
  ┃ ┗ 📜[category].feather
  ┗ 📂questionnaire
    ┗ 📜[category].feather
+```
