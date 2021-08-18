@@ -15,6 +15,8 @@ CATEGORIES = {"examination": EXAMINATION_CATEGORIES, "laboratory": LABORATORY_CA
 ALGORITHMS = ["elastic_net", "light_gbm"]
 ALGORITHMS_ALGORITHMS = [f"{algorithm_1} vs {algorithm_2}" for idx_algorithm, algorithm_1 in enumerate(ALGORITHMS) for algorithm_2 in ALGORITHMS[idx_algorithm:]]
 
+RANDOM_STATES = [1, 2]
+
 MINIMUM_NUMBER_PARTICIPANTS = 10
 
 

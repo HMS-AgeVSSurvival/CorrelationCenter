@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -d data/correlation/feature_importances ] || mkdir -p data/correlation/feature_importances
+
 MAIN_CATEGORIES=("examination" "laboratory" "questionnaire")
 
 for MAIN_CATEGORY in ${MAIN_CATEGORIES[@]}

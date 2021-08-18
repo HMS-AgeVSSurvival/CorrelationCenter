@@ -29,7 +29,7 @@ def get_correlation_same_target_same_algorithm(data, category, target, algorithm
         item_a = data.loc[f"feature_importances_{target}_{algorithm}_1_train"]
         item_b = data.loc[f"feature_importances_{target}_{algorithm}_2_train"]
         if method != "spearman" or (item_a.std() != 0 and item_b.std() != 0):
-            correlations[method].loc[category, ("same_target_same_algorithm", target, algorithm)] = item_a.corr(item_b, method=method)
+            correlations[method].loc[category, (target, algorithm)] = item_a.corr(item_b, method=method)
 
         list_correlations_std = []
         for random_state_a in [1, 2]:
@@ -45,7 +45,7 @@ def get_correlation_same_target_same_algorithm(data, category, target, algorithm
                         else:
                             list_correlations_std.append(np.nan)
 
-        correlations_std[method].loc[category, ("same_target_same_algorithm", target, algorithm)] = pd.Series(list_correlations_std).std()
+        correlations_std[method].loc[category, (target, algorithm)] = pd.Series(list_correlations_std).std()
 
 
 def get_correlation_same_target(data, category, target, algorithms, folds, correlations, correlations_std):
@@ -61,7 +61,7 @@ def get_correlation_same_target(data, category, target, algorithms, folds, corre
                     list_correlations.append(item_a.corr(item_b, method=method))
                 else:
                     list_correlations.append(np.nan)
-        correlations[method].loc[category, ("same_target_same_algorithm", target, algorithms)] = pd.Series(list_correlations).std()
+        correlations[method].loc[category, (target, algorithms)] = pd.Series(list_correlations).std()
 
         list_correlations_std = []
         for random_state_a in [1, 2]:
@@ -75,7 +75,7 @@ def get_correlation_same_target(data, category, target, algorithms, folds, corre
                         else:
                             list_correlations_std.append(np.nan)
 
-        correlations_std[method].loc[category, ("same_target_same_algorithm", target, algorithms)] = pd.Series(list_correlations_std).std()
+        correlations_std[method].loc[category, (target, algorithms)] = pd.Series(list_correlations_std).std()
 
 
 def get_correlation_same_algorithm(data, category, targets, algorithm, folds, correlations, correlations_std):
@@ -91,7 +91,7 @@ def get_correlation_same_algorithm(data, category, targets, algorithm, folds, co
                     list_correlations.append(item_a.corr(item_b, method=method))
                 else:
                     list_correlations.append(np.nan)
-        correlations[method].loc[category, ("same_target_same_algorithm", targets, algorithm)] = pd.Series(list_correlations).std()
+        correlations[method].loc[category, (targets, algorithm)] = pd.Series(list_correlations).std()
 
         list_correlations_std = []
         for random_state_a in [1, 2]:
@@ -105,7 +105,7 @@ def get_correlation_same_algorithm(data, category, targets, algorithm, folds, co
                         else:
                             list_correlations_std.append(np.nan)
                         
-        correlations_std[method].loc[category, ("same_target_same_algorithm", targets, algorithm)] = pd.Series(list_correlations_std).std()
+        correlations_std[method].loc[category, (targets, algorithm)] = pd.Series(list_correlations_std).std()
 
 
 def compute_correlation(main_category):
@@ -113,9 +113,9 @@ def compute_correlation(main_category):
     for same_different in FEATURE_IMPORTANCES_SAME_DIFFERENT_TARGETS:
         targets = FEATURE_IMPORTANCES_SAME_DIFFERENT_TARGETS[same_different]
         algorithms = FEATURE_IMPORTANCES_SAME_DIFFERENT_ALGORITHMS[same_different]
-        list_columns.extend(pd.MultiIndex.from_product(([same_different], targets, algorithms)).tolist())
+        list_columns.extend(pd.MultiIndex.from_product((targets, algorithms)).tolist())
 
-    columns = pd.MultiIndex.from_tuples(list_columns)
+    columns = pd.MultiIndex.from_tuples(list_columns, names=["targets", "algorithms"])
     template_correlations = pd.DataFrame(None, index=CATEGORIES[main_category], columns=columns)
     template_correlations.index.name = "category"
     

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -d data/correlation/residual ] || mkdir -p data/correlation/residual
+
 TARGETS=("age" "all" "cvd" "cancer")
 TARGETS_INDEXES=(0 1 2 3)
 
