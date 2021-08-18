@@ -13,7 +13,7 @@ setup(
         "scikit-survival==0.15.0.post0",
         "gspread==3.7.0",
         "openpyxl==3.0.7",
-        "lifelines==0.26.0"
+        "lifelines==0.26.0",
     ],
     extras_require={
         "dev": ["tqdm==4.61.2", "jupyter==1.0.0", "ipympl==0.7.0", "black==21.6b0"]
