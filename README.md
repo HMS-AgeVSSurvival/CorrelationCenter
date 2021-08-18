@@ -1,5 +1,7 @@
 # CorrelationCenter
-Compute the correlations between the outputs of the TrainingCenter
+Compute the correlations between the outputs of the TrainingCenter. 
+
+Feel free to start a discussion to ask anything [here](https://github.com/HMS-Internship/CorrelationCenter/discussions)
 
 To setup the virtual environment:
 ```Bash
