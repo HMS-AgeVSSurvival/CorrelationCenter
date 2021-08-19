@@ -12,7 +12,6 @@ from residual import (
     DEATH_COLUMN,
     FOLLOW_UP_TIME_COLUMN,
 )
-from log_hazard_ratio import COLUMNS_TO_DROP_FOR_SCALE, COLUMNS_TO_ADD_AFTER_SCALE
 
 
 def log_hazard_ratio_cli(argvs=sys.argv[1:]):
@@ -74,11 +73,28 @@ def compute_log_hazard_ratio(main_category, category, source_algorithm):
         )
 
         if (not data.empty) and ((data[DEATH_COLUMN] == 1.0).sum() > 0):
-            columns_to_scale = data.columns.drop(COLUMNS_TO_DROP_FOR_SCALE)
+            columns_to_scale = data.columns.drop([DEATH_COLUMN, FOLLOW_UP_TIME_COLUMN])
             scaled_data = (data[columns_to_scale] - data[columns_to_scale].mean()) / (
                 data[columns_to_scale].std() + 1e-16
             )
-            scaled_data[COLUMNS_TO_ADD_AFTER_SCALE] = data[COLUMNS_TO_ADD_AFTER_SCALE]
+            scaled_data[[DEATH_COLUMN, FOLLOW_UP_TIME_COLUMN]] = data[
+                [DEATH_COLUMN, FOLLOW_UP_TIME_COLUMN]
+            ]
+            scaled_data.drop(
+                columns=scaled_data.columns[scaled_data.std() == 0], inplace=True
+            )  # Help the model to converge
+
+            is_death = scaled_data[DEATH_COLUMN].astype(bool)
+            columns_too_correlated_to_death = []
+            for column in scaled_data.columns.drop(
+                [DEATH_COLUMN, FOLLOW_UP_TIME_COLUMN]
+            ):
+                if scaled_data.loc[is_death, column].std() < 1e-15:
+                    columns_too_correlated_to_death.append(column)
+                if scaled_data.loc[~is_death, column].std() < 1e-15:
+                    columns_too_correlated_to_death.append(column)
+
+            scaled_data.drop(columns=columns_too_correlated_to_death, inplace=True)
 
             cph = CoxPHFitter()
 

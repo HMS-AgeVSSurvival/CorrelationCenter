@@ -2,7 +2,9 @@ import os
 import time
 import numpy as np
 import gspread
+import requests
 import json
+from json.decoder import JSONDecodeError
 
 
 def get_worksheet(sheet_name):
@@ -16,9 +18,13 @@ def get_worksheet(sheet_name):
 
 
 def handle_gspread_error(error):
-    error = json.loads(error.response._content)
+    try:
+        error = json.loads(error.response._content)
+    except JSONDecodeError:
+        raise error
 
     if error["error"]["code"] in [
+        404,
         429,
         101,
         500,
@@ -39,6 +45,8 @@ def update_cell(sheet_name, row, col, value):
             cell_updated = True
         except gspread.exceptions.APIError as error_gspread:
             handle_gspread_error(error_gspread)
+        except requests.exceptions.ReadTimeout:
+            pass
 
 
 def update_cells(sheet_name, first_row, first_col, values):
@@ -58,6 +66,8 @@ def update_cells(sheet_name, first_row, first_col, values):
             cell_updated = True
         except gspread.exceptions.APIError as error_gspread:
             handle_gspread_error(error_gspread)
+        except requests.exceptions.ReadTimeout:
+            pass
 
 
 def find_cell(sheet_name, name):
@@ -69,6 +79,8 @@ def find_cell(sheet_name, name):
             got_cell = True
         except gspread.exceptions.APIError as error_gspread:
             handle_gspread_error(error_gspread)
+        except requests.exceptions.ReadTimeout:
+            pass
 
     return cell
 
@@ -82,6 +94,8 @@ def findall_cells(sheet_name, name):
             got_cell = True
         except gspread.exceptions.APIError as error_gspread:
             handle_gspread_error(error_gspread)
+        except requests.exceptions.ReadTimeout:
+            pass
 
     return cells
 
@@ -95,6 +109,8 @@ def get_cell(sheet_name, row, col):
             got_cell = True
         except gspread.exceptions.APIError as error_gspread:
             handle_gspread_error(error_gspread)
+        except requests.exceptions.ReadTimeout:
+            pass
 
     return cell
 
@@ -110,5 +126,7 @@ def get_col_values(sheet_name, col_name):
             got_col = True
         except gspread.exceptions.APIError as error_gspread:
             handle_gspread_error(error_gspread)
+        except requests.exceptions.ReadTimeout:
+            pass
 
     return col_values
