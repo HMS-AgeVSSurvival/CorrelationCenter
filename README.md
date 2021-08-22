@@ -1,4 +1,6 @@
 # CorrelationCenter
+[![Super linter](https://github.com/HMS-Internship/CorrelationCenter/actions/workflows/linter.yml/badge.svg)](https://github.com/HMS-Internship/CorrelationCenter/actions/workflows/linter.yml)
+
 This repository is part of an entire project to study age prediction and survival prediction from NHANES dataset. The code of this project is split into 3 repositories:
 - 📦[NHANES_preprocessing](https://github.com/HMS-Internship/NHANES_preprocessing) to scrape the NHANES website and preprocess the data.
 - 📦[TrainingCenter](https://github.com/HMS-Internship/TrainingCenter) to train the algorithms from the dataset created in the previous repository.
