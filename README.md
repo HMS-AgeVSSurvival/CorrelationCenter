@@ -1,8 +1,13 @@
 # CorrelationCenter
-Compute the correlations between the outputs of the TrainingCenter. 
+This repository is part of an entire project to study age prediction and survival prediction from NHANES dataset. The code of this project is split into 3 repositories:
+- 📦[NHANES_preprocessing](https://github.com/HMS-Internship/NHANES_preprocessing) to scrape the NHANES website and preprocess the data.
+- 📦[TrainingCenter](https://github.com/HMS-Internship/TrainingCenter) to train the algorithms from the dataset created in the previous repository.
+- 📦[CorrelationCenter](https://github.com/HMS-Internship/CorrelationCenter) to study the outputs of the models trained in the previous repository.
 
 Feel free to start a discussion to ask anything [here](https://github.com/HMS-Internship/CorrelationCenter/discussions)
 
+
+## Installation
 To setup the virtual environment:
 ```Bash
 pip install -e .
