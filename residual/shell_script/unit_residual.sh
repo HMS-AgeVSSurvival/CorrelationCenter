@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --partition short
-#SBATCH --time=00:10:00
+#SBATCH --time=00:30:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu 400M
+#SBATCH --mem-per-cpu 2G
 
 unset MAIN_CATEGORY
 
