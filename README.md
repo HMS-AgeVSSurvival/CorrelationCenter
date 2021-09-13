@@ -24,6 +24,7 @@ To launch this step:
 ./residual/shell_script/run_residual.sh
 ```
 
+Now, step [II](#II-Log-hazard-ratio), [III](#III-Feature-importances) and [IV](#IV-Correlation) are independent, they all need the [first step](#I-Residual) to work.
 
 ## [II Log hazard ratio](./log_hazard_ratio)
 
@@ -40,7 +41,7 @@ It stores the feature importances, that were gathered in the first [step](#I-Res
 
 To launch this step:
 ```Bash
-./feature_importances/run_feature_importances.sh
+./feature_importances/shell_script/run_feature_importances.sh
 ```
 
 ## [IV Correlation](./correlation)
