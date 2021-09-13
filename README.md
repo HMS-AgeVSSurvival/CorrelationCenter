@@ -37,7 +37,7 @@ To launch this step:
 
 ## [III Feature importances](./feature_importances)
 
-It stores the feature importances, that were gathered in the first [step](#I-Residual), at _data/feature_importances/main_category/category.feather_.
+It stores the feature importances, that were gathered in the first [step](#I-Residual), at _data/feature_importances/main_category/category.feather_. This step does not interact with Slurm, the code is directly executed in the terminal.
 
 To launch this step:
 ```Bash
@@ -50,8 +50,8 @@ It computes the correlations between the residuals and between the feature impor
 
 To launch this step:
 ```Bash
-./correlation/run_residual_correlation.sh
-./correlation/run_feature_importances_correlation.sh
+./correlation/shell_script/run_residual_correlation.sh
+./correlation/shell_script/run_feature_importances_correlation.sh
 ```
 
 
